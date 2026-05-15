@@ -11,24 +11,41 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: Initialize the CustomerService class with an invalid max size of 0.
+        // Expected Result: The constructor should automatically correct the invalid size and set the max size to 10.
         Console.WriteLine("Test 1");
+        var cs1 = new CustomerService(0);
+        Console.WriteLine($"Detect(s) Found: {cs1}"); // Check if the max size is 10
+        Console.WriteLine("----------------------");
 
-        // Defect(s) Found: 
+        // Defect(s) Found: Originally the maxSize was reassigned an invalid size, rather using the default of 10.
 
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: Create a queue of size 2 and try to add 3 customers.
+        // Expected Result: The 3rd customer should trigger a queue full error message.
         Console.WriteLine("Test 2");
+        var cs2 = new CustomerService(2);
+        cs2.AddNewCustomer();
+        cs2.AddNewCustomer();
+        cs2.AddNewCustomer();
 
-        // Defect(s) Found: 
+        // Defect(s) Found: The issue was due to a strictly greater than (>) check instead of greater than or equal to (>=) which meant that the queue could overflow past its maximum size.
 
         Console.WriteLine("=================");
 
         // Add more Test Cases As Needed Below
+        // Test 3
+        // Scenario: Create a new queue and try to serve a customer immediately.
+        // Expected Result: It should display an empty queue error message instead of crashing.
+        Console.WriteLine("Test 3");
+        var cs3 = new CustomerService(5);
+        cs3.ServeCustomer();
+
+        // Defect(s) Found: In the original code for the ServeCustomer method, after removing the customer from the front of the queue, it would try to create a new Customer object for the deleted customer (lost data). Additionally, it didn’t check to see if the queue was empty before attempting to delete the front customer, causing an out of range exception.
+
+        Console.WriteLine("=================");
     }
 
     private readonly List<Customer> _queue = new();
@@ -67,7 +84,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -88,8 +105,19 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
+        // 1. Check if the queue is empty to prevent the program from crashing
+        if (_queue.Count == 0) {
+            Console.WriteLine("The queue is empty.");
+            return;
+        }
+
+        // 2. Save the data of the first customer in line before removing them
         var customer = _queue[0];
+
+        // 3. Remove the customer from the front of the queue
+        _queue.RemoveAt(0);
+
+        // 4. Display the customer's information on the console
         Console.WriteLine(customer);
     }
 

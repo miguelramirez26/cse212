@@ -33,6 +33,15 @@ public class Maze
     public void MoveLeft()
     {
         // FILL IN CODE
+
+        // 1. Check if the 'left' movement (index 0) is false
+        if (!_mazeMap[(_currX, _currY)][0])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+
+        // 2. If it was true, move the player to the left by decreasing X;
+        _currX--;
     }
 
     /// <summary>
@@ -42,6 +51,13 @@ public class Maze
     public void MoveRight()
     {
         // FILL IN CODE
+
+        // Check the 'right' movement (index 1)
+        if (!_mazeMap[(_currX, _currY)][1])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        _currX++;
     }
 
     /// <summary>
@@ -51,6 +67,13 @@ public class Maze
     public void MoveUp()
     {
         // FILL IN CODE
+
+        // Check the 'up' movement (index 2)
+        if (!_mazeMap[(_currX, _currY)][2])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        _currY--;
     }
 
     /// <summary>
@@ -60,6 +83,13 @@ public class Maze
     public void MoveDown()
     {
         // FILL IN CODE
+
+        // Check the 'down' movement (index 3)
+        if (!_mazeMap[(_currX, _currY)][3])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        _currY++;
     }
 
     public string GetStatus()

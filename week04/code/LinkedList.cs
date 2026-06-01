@@ -44,7 +44,7 @@ public class LinkedList : IEnumerable<int>
         else
         {
             // Connect the current tail forward to the new node
-            _tail.Next = newNode;
+            _tail!.Next = newNode;
 
             // Connect the new node backward to the current tail
             newNode.Prev = _tail;
@@ -91,7 +91,7 @@ public class LinkedList : IEnumerable<int>
             return;
         }
         // If the list has only on item, empty the list
-        else if (_head == _tail)
+        if (_head == _tail)
         {
             _head = null;
             _tail = null;
@@ -100,7 +100,7 @@ public class LinkedList : IEnumerable<int>
         else
         {
             _tail = _tail.Prev;
-            _tail.Next = null;
+            _tail!.Next = null;
         }
     }
 
@@ -172,8 +172,8 @@ public class LinkedList : IEnumerable<int>
                 // Case 4: The node is in the middle of the list
                 else
                 {
-                    curr.Prev.Next = curr.Next;
-                    curr.Next.Prev = curr.Prev;
+                    curr.Prev!.Next = curr.Next;
+                    curr.Next!.Prev = curr.Prev;
                 }
 
                 return; // Exit after successful removal
